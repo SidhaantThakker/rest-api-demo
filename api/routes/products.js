@@ -8,27 +8,32 @@ router.get('/', (req, res, next) =>{
 });
 
 router.post('/', (req, res, next) =>{
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+    }
     res.status(201).json({
-        message: 'Handling POST requests to /products'
+        message: 'Handling POST requests to /products',
+        createdProduct: product
     })
 });
 
-router.get('/:id', (req, res, next) => {
-    const id = req.params.id;
+router.get('/:productID', (req, res, next) => {
+    const id = req.params.productID;
     res.status(200).json({
         message: `GET request to /products with id ${id}`
     })
 });
 
-router.patch('/:id', (req, res, next) => {
-    const id = req.params.id;
+router.patch('/:productID', (req, res, next) => {
+    const id = req.params.productID;
     res.status(200).json({
         message: `PATCH request to /products with id ${id}`
     })
 });
 
-router.delete('/:id', (req, res, next) => {
-    const id = req.params.id;
+router.delete('/:productID', (req, res, next) => {
+    const id = req.params.productID;
     res.status(200).json({
         message: `DELETE request to /products with id ${id}`
     })
