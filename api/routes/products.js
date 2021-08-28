@@ -6,10 +6,27 @@ const product = require('../models/product');
 const Product = require('../models/product');
 
 router.get('/', (req, res, next) =>{
-    Product.find().exec()
+    Product.find()
+    .select('name price _id')
+    .exec()
     .then(products => {
-        console.log(products)
-        res.status(200).json(products)
+        const response = {
+            count: products.length,
+            products: products.map(product => {
+                return {
+                    name: product.name,
+                    price: product.price,
+                    _id: product._id,
+                }
+            }),
+            request: {
+                type: 'GET',
+                description: 'Get all products',
+                url: 'http://localhost:3000/products'
+            }
+        }
+        console.log(response)
+        res.status(200).json(response)
     })
     .catch(err => {
         console.log(err);
@@ -40,7 +57,7 @@ router.post('/', (req, res, next) =>{
     });
 });
 
-router.get('/:productID', (req, res, next) => {
+router.get('/:productId', (req, res, next) => {
     const id = req.params.productID;
     Product.findById(id)
     .exec()
@@ -60,7 +77,7 @@ router.get('/:productID', (req, res, next) => {
     });
 });
 
-router.patch('/:productID', (req, res, next) => {
+router.patch('/:productId', (req, res, next) => {
     const id = req.params.productID;
     const updateProps = {};
     for (const prop of req.body){
@@ -69,7 +86,13 @@ router.patch('/:productID', (req, res, next) => {
     Product.updateOne({_id: id}, {$set: updateProps}).exec()
     .then(result => {
         console.log(result);
-        res.status(200).json(result);
+        res.status(200).json({
+            message: 'Product updated successfully',
+            request: {
+                type: 'GET',
+                url: 'http://localhost:3000/product' + id
+            }
+        });
     })
     .catch(err => {
         console.log(err)
@@ -77,12 +100,18 @@ router.patch('/:productID', (req, res, next) => {
     })
 });
 
-router.delete('/:productID', (req, res, next) => {
+router.delete('/:productId', (req, res, next) => {
     const id = req.params.productID;
     Product.remove({_id: id}).exec()
     .then(result => {
         console.log(result)
-        res.status(200).json(result)
+        res.status(200).json({
+            message: 'Product deleted successfully!',
+            request: {
+                type: 'DELETE',
+                url: 'http://localhost:3000/products/'+id
+            }
+        })
     })
     .catch(err =>{
         console.log(err);

@@ -13,6 +13,8 @@ mongoose.connect('mongodb+srv://admin123:'+process.env.DB_PW+'@cluster0.ua9fz.mo
     useUnifiedTopology: true
 })
 
+mongoose.Promise = global.Promise;
+
 app.use(morgan('dev'));
 
 app.use(express.json());

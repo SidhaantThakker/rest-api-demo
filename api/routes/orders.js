@@ -17,21 +17,21 @@ router.post('/', (req, res, next) =>{
     })
 });
 
-router.get('/:orderID', (req, res, next) => {
+router.get('/:orderId', (req, res, next) => {
     const id = req.params.orderID;
     res.status(200).json({
         message: `GET request to /orders with id ${id}`
     })
 });
 
-router.patch('/:orderID', (req, res, next) => {
+router.patch('/:orderId', (req, res, next) => {
     const id = req.params.orderID;
     res.status(200).json({
         message: `PATCH request to /orders with id ${id}`
     })
 });
 
-router.delete('/:orderID', (req, res, next) => {
+router.delete('/:orderId', (req, res, next) => {
     const id = req.params.orderID;
     res.status(200).json({
         message: `DELETE request to /orders with id ${id}`
